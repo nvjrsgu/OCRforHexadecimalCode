@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
  */
 public class TextImage {
 
-    private BufferedImage originalImage;
+    BufferedImage originalImage;
 
     int height, width;
 
@@ -69,5 +69,8 @@ public class TextImage {
         return columnBrightness;
     }
 
+    BufferedImage getOriginalImage(){
+        return originalImage;
+    }
 
 }
