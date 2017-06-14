@@ -7,40 +7,30 @@ import java.util.LinkedHashSet;
  * Created by nvjrsgu on 6/14/2017.
  * Закидываем картинку, а на выходе должны получить коллекцию картинок строк
  */
-public class CutLines {
+public class CutLines extends TextImage {
 
-    private BufferedImage originalImage;
     private LinkedHashSet<BufferedImage> lines;
 
-    private int height, width;
-
-    CutLines(BufferedImage originalImage){
-        this.originalImage = originalImage;
-
-        height = originalImage.getHeight();
-        width = originalImage.getWidth();
+    CutLines(BufferedImage image){
+        super(image);
     }
 
-    private int[][] getImageColorArray(){
-        int[][] imageColorArray = new int[height][width];
+    public BufferedImage cropLines(){
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        int colorArray[][] = getImageColorArray();
+        int lineBrightness[] = getLinesAverageBrightness();
+        int averageBrightness = getAverageBrightness();
+
         for(int y = 0; y < height; y++){
-            for(int x = 0; x < width; x++){
-                imageColorArray[y][x] = originalImage.getRGB(x,y);
+            for (int x = 0; x < width; x++){
+                if(averageBrightness < lineBrightness[y]) {
+                    image.setRGB(x, y, colorArray[y][x]);
+                }else{
+                    image.setRGB(x, y, 0xFDFF2C);
+                }
             }
         }
-        return imageColorArray;
+        return image;
     }
-
-    private long getAverageBrightness(){
-        int[][] imageArray = getImageColorArray();
-        long totalBrightness = 0;
-        for(int y = 0; y < height; y++){
-            for(int x = 0; x < width; x++){
-                totalBrightness += 0xFFFFFF-imageArray[y][x]&0x00FFFFFF;
-            }
-        }
-        return totalBrightness/(height*width);
-    }
-
-
 }
