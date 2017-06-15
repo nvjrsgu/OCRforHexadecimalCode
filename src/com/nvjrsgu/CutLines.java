@@ -64,11 +64,12 @@ public class CutLines extends TextImage {
         boolean white = true;
         white = gg[0] == 0;
 
-        
+
         int counter = 0;
         for(int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
 
+                
                 if(gg[counter+1]-edge==y && white){
                     white = !white;
                     counter++;
