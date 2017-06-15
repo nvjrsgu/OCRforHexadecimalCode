@@ -75,7 +75,6 @@ public class CutLines extends TextImage {
                     white = !white;
                     counter++;
                 }
-
                 if(white){
                     image.setRGB(x, y, 0xFDFF2C);
                 }else {
