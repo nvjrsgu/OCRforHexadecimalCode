@@ -61,6 +61,15 @@ public class CutLines extends TextImage {
         boolean ended = false;
         boolean started = true;
         int gg[] = getStartEndTextPositions();
+        System.out.println(Arrays.toString(gg));
+
+        if(gg[0] == 0){
+            edge = (int) Math.ceil((gg[2]-gg[1])*0.065);
+
+        }else{
+            edge = (int) Math.ceil((gg[1]-gg[0])*0.065);
+        }
+        System.out.println(edge);
         boolean white = true;
         white = gg[0] == 0;
 
@@ -69,7 +78,7 @@ public class CutLines extends TextImage {
         for(int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
 
-                
+
                 if(gg[counter+1]-edge==y && white){
                     white = !white;
                     counter++;
@@ -101,10 +110,6 @@ public class CutLines extends TextImage {
                 ended = true;
             }
         }
-        return lines;
-    }
-
-    public LinkedHashSet<BufferedImage> getLines(){
         return lines;
     }
 }
