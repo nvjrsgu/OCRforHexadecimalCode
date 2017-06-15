@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 public class CutLines extends TextImage {
 
     private LinkedHashSet<BufferedImage> lines = new LinkedHashSet<>();
-    BufferedImage image_or;
+    BufferedImage image_original;
     private int averageBrightness;
     private int[] lineBrightness;
     private int[][] colorArray;
@@ -21,7 +21,7 @@ public class CutLines extends TextImage {
         averageBrightness = getAverageBrightness();
         lineBrightness = getLinesAverageBrightness();
         colorArray = getImageColorArray();
-        image_or = getOriginalImage();
+        image_original = getOriginalImage();
     }
 
     private int[] getStartEndTextPositions(){
@@ -50,7 +50,7 @@ public class CutLines extends TextImage {
         return startEndText;
     }
 
-    public BufferedImage cropLines(){
+    public LinkedHashSet<BufferedImage> cropLines(){
         int edge = 1;
 
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -67,6 +67,7 @@ public class CutLines extends TextImage {
         int counter = 0;
         for(int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
+
                 if(gg[counter+1]-edge==y && white){
                     white = !white;
                     counter++;
@@ -74,7 +75,6 @@ public class CutLines extends TextImage {
                     white = !white;
                     counter++;
                 }
-
 
                 if(white){
                     image.setRGB(x, y, 0xFDFF2C);
@@ -87,8 +87,8 @@ public class CutLines extends TextImage {
                 if(ended) {
                     codeEnd = y;
                     if (codeStart != -1 && codeEnd > codeStart) {
-                        System.out.println("Start: " + codeStart + " End: " + codeEnd);
-                        lines.add(image_or.getSubimage(0, codeStart, width, codeEnd - codeStart));
+                        //System.out.println("Start: " + codeStart + " End: " + codeEnd);
+                        lines.add(image_original.getSubimage(0, codeStart, width, codeEnd - codeStart));
                     }
                     ended = false;
                 }
@@ -101,8 +101,9 @@ public class CutLines extends TextImage {
                 ended = true;
             }
         }
-        return image;
+        return lines;
     }
+
     public LinkedHashSet<BufferedImage> getLines(){
         return lines;
     }
