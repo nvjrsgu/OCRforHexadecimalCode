@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
  */
 public class TextImage {
 
-    BufferedImage originalImage;
+    private BufferedImage originalImage;
 
     int height, width;
 

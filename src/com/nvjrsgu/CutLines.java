@@ -6,7 +6,6 @@ import java.util.LinkedHashSet;
 
 /**
  * Created by nvjrsgu on 6/14/2017.
- * Закидываем картинку, а на выходе должны получить коллекцию картинок строк
  */
 public class CutLines extends TextImage {
 
@@ -25,8 +24,7 @@ public class CutLines extends TextImage {
     }
 
     private int[] getStartEndTextPositions(){
-
-        int startEndText[] = new int[height];
+        int startEndText[] = new int[height/3];
         boolean switcher = false;
         int counter = 0;
         for(int y = 0; y < height; y++){
@@ -61,7 +59,7 @@ public class CutLines extends TextImage {
         boolean ended = false;
         boolean started = true;
         int gg[] = getStartEndTextPositions();
-        System.out.println(Arrays.toString(gg));
+       // System.out.println(Arrays.toString(gg));
 
         if(gg[0] == 0){
             edge = (int) Math.ceil((gg[2]-gg[1])*0.065);
@@ -69,9 +67,8 @@ public class CutLines extends TextImage {
         }else{
             edge = (int) Math.ceil((gg[1]-gg[0])*0.065);
         }
-        System.out.println(edge);
-        boolean white = true;
-        white = gg[0] == 0;
+
+        boolean white = gg[0] == 0;
 
 
         int counter = 0;
