@@ -9,41 +9,30 @@ import java.util.LinkedHashSet;
  */
 public class DrawLines {
 
-    public BufferedImage drawHorizontalLines(LinkedHashSet<Integer> whereDraw, BufferedImage image, int rgb){
-        int imageHeight = image.getHeight();
-        int iamgeWidth = image.getWidth();
-
+    public BufferedImage drawLines(LinkedHashSet<Integer> whereDraw, BufferedImage image, int rgb, boolean vertical){
+        int imageHeight = -1;
+        int iamgeWidth = -1;
+        if(!vertical) {
+            imageHeight = image.getHeight();
+            iamgeWidth = image.getWidth();
+        }else{
+            imageHeight = image.getWidth();
+            iamgeWidth = image.getHeight();
+        }
         Iterator<Integer> iterator = whereDraw.iterator();
         int drawIndex = -1;
 
         for(int y = 0; y < imageHeight; y++){
             if(iterator.hasNext()&&y>drawIndex) {
                 drawIndex = iterator.next();
-                System.out.println(drawIndex);
+                //System.out.println(drawIndex);
             }
             for(int x = 0; x < iamgeWidth; x++){
                 if(y == drawIndex){
-                    image.setRGB(x,y,rgb);
-                }
-            }
-        }
-        return image;
-    }
-
-    public BufferedImage drawVerticalLines(LinkedHashSet<Integer> whereDraw, BufferedImage image, int rgb){
-        int imageHeight = image.getHeight();
-        int iamgeWidth = image.getWidth();
-
-        Iterator<Integer> iterator = whereDraw.iterator();
-        int drawIndex = -1;
-        for(int x = 0; x < iamgeWidth; x++){
-            if(iterator.hasNext()&&x>drawIndex) {
-                drawIndex = iterator.next();
-                System.out.println(drawIndex);
-            }
-            for(int y = 0; y < imageHeight; y++){
-                if(x == drawIndex){
-                    image.setRGB(x,y,rgb);
+                    if(!vertical)
+                    image.setRGB(x,y,image.getRGB(x,y)+rgb);
+                    else
+                    image.setRGB(y,x,image.getRGB(y, x)+rgb);
                 }
             }
         }
