@@ -25,6 +25,7 @@ public class CutLines extends TextImage {
 
     private int[] getStartEndTextPositions(){
         int startEndText[] = new int[height/3];
+
         boolean switcher = false;
         int counter = 0;
         for(int y = 0; y < height; y++){
@@ -44,13 +45,13 @@ public class CutLines extends TextImage {
                 }
             }
         }
-
         return startEndText;
     }
 
-    public LinkedHashSet<BufferedImage> cropLines(){
-        int edge = 1;
 
+
+    public LinkedHashSet<BufferedImage> cropLines(){
+        int edge = -1;
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         int codeStart = -1;
@@ -94,7 +95,9 @@ public class CutLines extends TextImage {
                     codeEnd = y;
                     if (codeStart != -1 && codeEnd > codeStart) {
                         //System.out.println("Start: " + codeStart + " End: " + codeEnd);
-                        lines.add(image_original.getSubimage(0, codeStart, width, codeEnd - codeStart));
+                        BufferedImage oneLineImage = image_original.getSubimage(0, codeStart, width, codeEnd - codeStart);
+
+                        lines.add(deleteWhiteBorders(oneLineImage));
                     }
                     ended = false;
                 }
@@ -108,5 +111,31 @@ public class CutLines extends TextImage {
             }
         }
         return lines;
+    }
+
+    public BufferedImage deleteWhiteBorders(BufferedImage image){
+        TextImage textImage = new TextImage(image);
+        int averageBrightness = textImage.getAverageBrightness()/2;
+        int[] averageColumnsBrightness = textImage.getColumnsAverageBrightness();
+        int xPos[] = new int[2];
+
+        for(int i = 0; i < averageColumnsBrightness.length; i++){
+            if(averageColumnsBrightness[i] >= averageBrightness){
+                xPos[0] = i;
+                System.out.println(i);
+                break;
+            }
+        }
+
+        for(int i = averageColumnsBrightness.length-1; i > 0; i--){
+            if(averageColumnsBrightness[i] >= averageBrightness){
+                System.out.println(i);
+                xPos[1] = i;
+                break;
+            }
+        }
+
+        image = image.getSubimage(xPos[0]-(int)Math.ceil(image.getHeight()*0.12), 0, xPos[1]-xPos[0]+(int)Math.ceil(image.getHeight()*0.12)+(int)Math.ceil(image.getHeight()*0.12),image.getHeight());
+        return image;
     }
 }
